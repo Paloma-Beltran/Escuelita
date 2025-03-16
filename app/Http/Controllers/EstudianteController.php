@@ -12,7 +12,8 @@ class EstudianteController extends Controller
      */
     public function index()
     {
-        //
+        $estudiantes = Estudiante::all();
+        return view('vista_tabla', compact('estudiantes'));
     }
 
     /**
@@ -20,7 +21,7 @@ class EstudianteController extends Controller
      */
     public function create()
     {
-        //
+        return view('formulario');
     }
 
     /**
@@ -28,38 +29,16 @@ class EstudianteController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'correo' => 'required|email|unique:estudiantes',
+            'fecha_nacimiento' => 'required|date',
+            'ciudad' => 'required|string|max:255',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Estudiante $estudiante)
-    {
-        //
-    }
+        Estudiante::create($request->all());
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Estudiante $estudiante)
-    {
-        //
-    }
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante agregado correctamente.');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Estudiante $estudiante)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Estudiante $estudiante)
-    {
-        //
     }
 }
