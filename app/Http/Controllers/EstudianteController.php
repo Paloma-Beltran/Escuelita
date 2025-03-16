@@ -41,4 +41,49 @@ class EstudianteController extends Controller
         return redirect()->route('estudiantes.index')->with('success', 'Estudiante agregado correctamente.');
 
     }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Estudiante $estudiante)
+    {
+        return view('estudiantes.show-estudiantes', compact('estudiante'));
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Estudiante $estudiante)
+    {
+
+        return view('estudiantes.edit-estudiantes', compact('estudiante'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Estudiante $estudiante)
+    {
+
+        $estudiante->nombre = $request->nombre;
+        $estudiante->correo = $request->correo;
+        $estudiante->fecha_nacimiento = $request->fecha_nacimiento;
+        $estudiante->ciudad = $request->ciudad;
+        $estudiante->save();
+
+        return redirect()->route('estudiantes.show', $estudiante)->with('success', 'Estudiante actualizado correctamente');
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Estudiante $estudiante)
+    {
+        $estudiante->delete();
+
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante eliminado correctamente.');
+    }
+
 }
