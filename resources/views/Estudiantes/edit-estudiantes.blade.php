@@ -4,45 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Informacion de Estudiante</title>
+    <title>Editar Estudiante</title>
 </head>
 <body>
 
-    @if(session('success'))
-    <p style="color: green; font-weight: bold;">{{ session('success') }}</p>
+    <h1>Editar Estudiante # {{ $estudiante->id }}</h1>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
-    <h1>Estudiante # {{$estudiante->id}}</h1>
-    <ul>
-        <li>Nombre: {{$estudiante->nombre}}</li>
-        <li>Correo: {{$estudiante->correo}}</li>
-        <li>Fecha de Nacimiento: {{$estudiante->fecha_nacimiento }}</li>
-        <li>Ciudad: {{$estudiante->ciudad}}</li>
-    </ul>
+    <form action="{{ route('estudiantes.update', $estudiante) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-    <br>
-    <!-- Botón Tabla Estudiantes -->
-    <form action="{{ route('estudiantes.edit', $estudiante) }}" method="GET" style="display:inline;">
-        <button type="submit">Editar Informacion de Estudiante</button>
+        <label>Nombre:</label>
+        <input type="text" name="nombre"  value="{{ $estudiante->nombre }}">
+        @error('nombre')
+            <div class="alert alert-danger">{{ $estudiante }}</div>
+        @enderror
+        <br>
+        <label>Correo:</label>
+        <input type="email" name="correo" value="{{ $estudiante->correo }}">
+        @error('correo')
+            <div class="alert alert-danger">{{ $estudiante }}</div>
+        @enderror
+        <br>
+        <label>Fecha de Nacimiento:</label>
+        <input type="date" name="fecha_nacimiento" value="{{ $estudiante->fecha_nacimiento }}">
+        @error('fecha_nacimiento')
+            <div class="alert alert-danger">{{ $estudiante }}</div>
+        @enderror
+        <br>
+        <label>Ciudad:</label>
+        <input type="text" name="ciudad" value="{{ $estudiante->ciudad }}">
+        @error('ciudad')
+            <div class="alert alert-danger">{{ $estudiante }}</div>
+        @enderror
+        <br>
+
+        <button type="submit">Enviar</button>
     </form>
 
     <br>
-    <br>
-    <!-- Botón Agregar Estudiante -->
+    <!-- Botón Tabla Estudiantes -->
     <form action="{{ route('estudiantes.index', $estudiante) }}" method="GET" style="display:inline;">
         <button type="submit">Ver Tabla de Estudiantes</button>
     </form>
 
-    <br>
-    <br>
-    <!-- Boton Eliminar Estudiante -->
-    <form action="{{ route('estudiantes.destroy', $estudiante->id) }}" method="POST" style="display:inline;">
-        @csrf
-        @method('DELETE')
-        <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este estudiante?')">
-            Eliminar
-        </button>
-    </form>
-
 </body>
 </html>
+
