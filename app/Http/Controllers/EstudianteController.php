@@ -27,19 +27,18 @@ class EstudianteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function update(Request $request, Estudiante $estudiante)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'correo' => 'required|email|unique:estudiantes',
+            'correo' => 'required|email|unique:estudiantes,correo,' . $estudiante->id,
             'fecha_nacimiento' => 'required|date',
-            'ciudad' => 'required|string|max:255',
+            'ciudad' => 'required|string|max:255'
         ]);
 
-        Estudiante::create($request->all());
+        $estudiante->update($request->all());
 
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante agregado correctamente.');
-
+        return redirect()->route('estudiantes.show', $estudiante)->with('success', 'Estudiante actualizado correctamente');
     }
 
     /**
