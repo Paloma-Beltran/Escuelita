@@ -27,18 +27,19 @@ class EstudianteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function update(Request $request, Estudiante $estudiante)
+    public function store(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'correo' => 'required|email|unique:estudiantes,correo,' . $estudiante->id,
+            'correo' => 'required|email|unique:estudiantes',
             'fecha_nacimiento' => 'required|date',
-            'ciudad' => 'required|string|max:255'
+            'ciudad' => 'required|string|max:255',
         ]);
 
-        $estudiante->update($request->all());
+        Estudiante::create($request->all());
 
-        return redirect()->route('estudiantes.show', $estudiante)->with('success', 'Estudiante actualizado correctamente');
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante agregado correctamente.');
+
     }
 
     /**
@@ -64,12 +65,14 @@ class EstudianteController extends Controller
      */
     public function update(Request $request, Estudiante $estudiante)
     {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'correo' => 'required|email|unique:estudiantes,correo,' . $estudiante->id,
+            'fecha_nacimiento' => 'required|date',
+            'ciudad' => 'required|string|max:255'
+        ]);
 
-        $estudiante->nombre = $request->nombre;
-        $estudiante->correo = $request->correo;
-        $estudiante->fecha_nacimiento = $request->fecha_nacimiento;
-        $estudiante->ciudad = $request->ciudad;
-        $estudiante->save();
+        $estudiante->update($request->all());
 
         return redirect()->route('estudiantes.show', $estudiante)->with('success', 'Estudiante actualizado correctamente');
     }
